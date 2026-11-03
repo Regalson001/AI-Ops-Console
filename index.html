@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Ops Console — a responsive interface for monitoring AI workflows, model metrics, and automation activity.">
+  <meta name="theme-color" content="#07111f">
+  <title>AI Ops Console | AI Operations Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="AI Ops Console home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>AI OPS</strong><small>CONSOLE</small></span>
+      </a>
+
+      <div class="workspace-switcher">
+        <div class="workspace-icon">N</div>
+        <div class="workspace-copy"><strong>Northstar Labs</strong><small>Workspace</small></div>
+        <span class="chevron">⌄</span>
+      </div>
+
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-item active" href="#overview"><span class="nav-icon">◫</span> Overview</a>
+        <a class="nav-item" href="#workflows"><span class="nav-icon">⌘</span> Workflows <span class="nav-count" id="workflowNavCount">08</span></a>
+        <a class="nav-item" href="#models"><span class="nav-icon">◎</span> Model health</a>
+        <a class="nav-item" href="#activity"><span class="nav-icon">↗</span> Run history</a>
+        <a class="nav-item" href="#playground"><span class="nav-icon">✳</span> Prompt playground <span class="new-tag">NEW</span></a>
+      </nav>
+
+      <p class="nav-label nav-label-spaced">MANAGE</p>
+      <nav class="main-nav" aria-label="Management navigation">
+        <a class="nav-item" href="#integrations"><span class="nav-icon">⛓</span> Integrations</a>
+        <a class="nav-item" href="#settings"><span class="nav-icon">⚙</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="plan-card">
+          <div class="plan-top"><span class="plan-dot"></span><span>DEMO ENVIRONMENT</span></div>
+          <strong>Everything in view.</strong>
+          <p>Sample data is stored in this browser only.</p>
+          <button class="text-button" id="resetDemoBtn" type="button">Reset demo data <span>↻</span></button>
+        </div>
+
+        <div class="user-profile">
+          <div class="avatar">SO</div>
+          <div class="user-copy"><strong>Stephen Oyugi</strong><small>Workspace admin</small></div>
+          <span class="more">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenuBtn" type="button" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-separator">/</span><strong>Overview</strong></div>
+
+        <div class="topbar-actions">
+          <div class="live-status"><span></span> Systems operational</div>
+          <button class="icon-button notification-button" type="button" aria-label="Notifications">♧<i></i></button>
+          <div class="top-avatar">SO</div>
+        </div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> OPERATIONS CENTER</div>
+          <h1>AI operations <span>at a glance.</span></h1>
+          <p class="page-subtitle">Monitor workflows, inspect model performance, and keep your automation running smoothly.</p>
+        </div>
+
+        <div class="heading-actions">
+          <button class="button button-secondary" id="exportBtn" type="button"><span>↓</span> Export report</button>
+          <button class="button button-primary" id="runWorkflowBtn" type="button"><span>▶</span> Run workflow</button>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Key metrics">
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-label">Total executions</span><span class="metric-icon cyan">↗</span></div>
+          <div class="metric-value" id="totalExecutions">12,846</div>
+          <div class="metric-foot"><span class="trend positive">↗ 12.8%</span><span>vs. last 7 days</span></div>
+          <div class="mini-bars" aria-hidden="true">
+            <i style="height:35%"></i><i style="height:50%"></i><i style="height:42%"></i><i style="height:66%"></i><i style="height:54%"></i><i style="height:78%"></i><i style="height:68%"></i><i style="height:92%"></i><i style="height:75%"></i><i style="height:100%"></i>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-label">Successful runs</span><span class="metric-icon green">✓</span></div>
+          <div class="metric-value" id="successRate">98.6<span class="metric-unit">%</span></div>
+          <div class="metric-foot"><span class="trend positive">↗ 1.4%</span><span>success rate</span></div>
+          <div class="progress-track"><span style="width:98.6%"></span></div>
+          <div class="progress-caption"><span>Reliability target</span><strong>95%</strong></div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-label">Avg. response time</span><span class="metric-icon violet">◷</span></div>
+          <div class="metric-value">842<span class="metric-unit">ms</span></div>
+          <div class="metric-foot"><span class="trend positive">↘ 8.2%</span><span>faster this week</span></div>
+          <div class="sparkline">
+            <svg viewBox="0 0 180 34" role="img" aria-label="Response time trend">
+              <path d="M2 8 C18 7 18 24 35 18 S55 8 68 17 S88 28 104 14 S128 8 139 16 S161 25 178 5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-label">Active workflows</span><span class="metric-icon amber">⌘</span></div>
+          <div class="metric-value" id="activeWorkflows">08</div>
+          <div class="metric-foot"><span class="status-inline"><i></i> All systems ready</span><span>of 10 configured</span></div>
+          <div class="workflow-dots" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="muted"></i><i class="muted"></i>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel chart-panel" id="models">
+          <div class="panel-heading">
+            <div><h2>Execution volume</h2><p>Workflow activity over time</p></div>
+            <div class="chart-controls" role="group" aria-label="Chart time range">
+              <button class="range-button active" data-range="7" type="button">7 days</button>
+              <button class="range-button" data-range="30" type="button">30 days</button>
+            </div>
+          </div>
+
+          <div class="chart-summary">
+            <strong id="chartTotal">8,492</strong>
+            <span>executions in selected period</span>
+            <span class="chart-legend"><i></i> Successful runs <i class="legend-failed"></i> Failed runs</span>
+          </div>
+          <div class="chart-wrap"><canvas id="executionChart" aria-label="Execution volume chart" role="img"></canvas></div>
+        </article>
+
+        <article class="panel model-panel">
+          <div class="panel-heading">
+            <div><h2>Model health</h2><p>Current deployment snapshot</p></div>
+            <button class="dots-button" type="button" aria-label="More model options">•••</button>
+          </div>
+
+          <div class="model-main">
+            <div class="model-orb"><span>✳</span><i></i></div>
+            <div><strong>Customer Insights v2</strong><p><span class="healthy-dot"></span> Production · Healthy</p></div>
+            <span class="model-version">v2.4.1</span>
+          </div>
+
+          <div class="model-stats">
+            <div><span>Accuracy</span><strong>94.8%</strong><div class="tiny-progress"><i style="width:94.8%"></i></div></div>
+            <div><span>Precision</span><strong>92.1%</strong><div class="tiny-progress"><i style="width:92.1%"></i></div></div>
+            <div><span>Recall</span><strong>91.6%</strong><div class="tiny-progress"><i style="width:91.6%"></i></div></div>
+          </div>
+
+          <a href="#activity" class="panel-link">View model activity <span>→</span></a>
+        </article>
+      </section>
+
+      <section class="panel workflow-panel" id="workflows">
+        <div class="panel-heading workflow-heading">
+          <div><h2>Recent workflow runs</h2><p>Review activity across your automation stack</p></div>
+          <div class="table-actions">
+            <label class="search-box"><span>⌕</span><input id="workflowSearch" type="search" placeholder="Search workflows..." aria-label="Search workflows"></label>
+            <select id="statusFilter" aria-label="Filter by status">
+              <option value="all">All statuses</option>
+              <option value="Success">Success</option>
+              <option value="Running">Running</option>
+              <option value="Failed">Failed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>WORKFLOW</th><th>TRIGGER</th><th>LAST RUN</th><th>DURATION</th><th>STATUS</th><th></th></tr></thead>
+            <tbody id="workflowTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span id="tableResultCount">Showing 5 recent runs</span>
+          <button class="text-button" id="showAllBtn" type="button">View all activity <span>→</span></button>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel activity-panel" id="activity">
+          <div class="panel-heading">
+            <div><h2>System activity</h2><p>Latest events from your workspace</p></div>
+            <span class="live-pill"><i></i> LIVE FEED</span>
+          </div>
+
+          <div class="activity-list" id="activityList">
+            <div class="activity-item">
+              <span class="activity-symbol success-symbol">✓</span>
+              <div><p><strong>Churn prediction</strong> completed successfully</p><small>Model inference · 2 minutes ago</small></div>
+              <span class="activity-time">2m</span>
+            </div>
+            <div class="activity-item">
+              <span class="activity-symbol info-symbol">↻</span>
+              <div><p><strong>Document processing</strong> workflow started</p><small>Automation · 8 minutes ago</small></div>
+              <span class="activity-time">8m</span>
+            </div>
+            <div class="activity-item">
+              <span class="activity-symbol warning-symbol">!</span>
+              <div><p><strong>Email classifier</strong> retried after a timeout</p><small>Retry policy · 16 minutes ago</small></div>
+              <span class="activity-time">16m</span>
+            </div>
+            <div class="activity-item">
+              <span class="activity-symbol violet-symbol">✳</span>
+              <div><p><strong>Customer Insights v2</strong> health check passed</p><small>Model monitoring · 24 minutes ago</small></div>
+              <span class="activity-time">24m</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel prompt-panel" id="playground">
+          <div class="panel-heading">
+            <div><h2>Prompt playground</h2><p>Build a sample request payload</p></div>
+            <span class="beta-tag">BETA</span>
+          </div>
+
+          <label class="field-label" for="promptTemplate">Template</label>
+          <select class="full-select" id="promptTemplate">
+            <option value="summarizer">Document summarizer</option>
+            <option value="classifier">Customer email classifier</option>
+            <option value="sentiment">Sentiment analysis</option>
+          </select>
+
+          <label class="field-label" for="promptInput">Prompt instructions</label>
+          <textarea id="promptInput" rows="3">Summarize the supplied document in five concise bullet points. Use clear, neutral language.</textarea>
+
+          <div class="prompt-options">
+            <label>Temperature <strong id="temperatureValue">0.3</strong><input id="temperature" type="range" min="0" max="1" step="0.1" value="0.3"></label>
+            <label>Max tokens
+              <select id="maxTokens">
+                <option>256</option><option selected>512</option><option>1024</option><option>2048</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="payload-heading"><span>REQUEST PAYLOAD</span><button class="text-button" id="copyPayloadBtn" type="button">Copy JSON ↗</button></div>
+          <pre class="json-preview" id="jsonPreview" tabindex="0"></pre>
+          <button class="button button-primary full-button" id="refreshPayloadBtn" type="button">Update payload <span>↗</span></button>
+          <p class="demo-note">Demo only · No request is sent to an AI provider.</p>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <span>© 2026 AI Ops Console</span>
+        <span><i></i> Demo environment · Data stored locally</span>
+        <a href="#overview">Back to top ↑</a>
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
